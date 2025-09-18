@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyNextRide Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo_mynextride_branca.png" alt="Logo MyNextRide" id="navbar-logo">
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <nav class="nav flex-column">
+                <h6 class="sidebar-heading">Análises</h6>
+                <a class="nav-link active" href="#" data-target="visao-geral"><i class="bi bi-bar-chart-line-fill me-2"></i>Visão Geral</a>
+                <a class="nav-link" href="#" data-target="analise-hubs"><i class="bi bi-diagram-3-fill me-2"></i>Análise de Hubs</a>
+                <a class="nav-link" href="#" data-target="segmentacao-clientes"><i class="bi bi-people-fill me-2"></i>Segmentação</a>
+
+                <h6 class="sidebar-heading mt-4">App</h6>
+                <a class="nav-link" href="#" data-target="sobre"><i class="bi bi-info-circle-fill me-2"></i>Sobre o Projeto</a>
+                <a class="nav-link" href="#" data-target="fale-conosco"><i class="bi bi-envelope-fill me-2"></i>Fale Conosco</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section id="visao-geral" class="content-section active">
+                <h2 class="mb-4">Visão Geral</h2>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4"><div class="card kpi-card"><div class="card-body"><h6 class="card-subtitle mb-2 text-muted">Receita Total (GMV)</h6><h2 class="card-title" id="kpi-receita">Carregando...</h2></div></div></div>
+                    <div class="col-lg-4 col-md-6 mb-4"><div class="card kpi-card"><div class="card-body"><h6 class="card-subtitle mb-2 text-muted">Total de Passagens</h6><h2 class="card-title" id="kpi-passagens">Carregando...</h2></div></div></div>
+                    <div class="col-lg-4 col-md-12 mb-4"><div class="card kpi-card"><div class="card-body"><h6 class="card-subtitle mb-2 text-muted">Clientes Únicos</h6><h2 class="card-title" id="kpi-clientes">Carregando...</h2></div></div></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-6 mb-4"><div class="card chart-card"><div class="card-body"><h5>Top 10 Rotas Mais Populares</h5><canvas id="topRoutesChart"></canvas></div></div></div>
+                    <div class="col-lg-6 mb-4"><div class="card chart-card"><div class="card-body"><h5>Sazonalidade de Vendas (Receita/Mês)</h5><canvas id="seasonalityChart"></canvas></div></div></div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-6 mb-4"><div class="card chart-card"><div class="card-body"><h5>Distribuição de Clientes por Segmento</h5><canvas id="segmentDistributionChart"></canvas></div></div></div>
+                    <div class="col-lg-6 mb-4"><div class="card chart-card"><div class="card-body"><h5>Aquisição de Novos Clientes por Mês</h5><canvas id="newCustomersChart"></canvas></div></div></div>
+                </div>
+            </section>
+
+            <section id="analise-hubs" class="content-section">
+                <h2 class="mb-4">Análise de Hubs de Viagem</h2>
+                <div class="row">
+                    <div class="col-lg-5 mb-4"><div class="card info-card"><div class="card-body"><h5><i class="bi bi-diagram-3-fill me-2"></i>Top 10 Cidades Centrais (Hubs)</h5><p class="text-muted small">Cidades que funcionam como os principais pontos de conexão, ordenadas por sua centralidade.</p><div id="hubs-list" class="mt-3"></div></div></div></div>
+                    <div class="col-lg-7 mb-4"><div class="card chart-card"><div class="card-body"><h5><i class="bi bi-arrows-expand me-2"></i>Fluxo de Chegadas vs. Partidas</h5><p class="text-muted small">Comparativo do volume de viagens que chegam vs. que partem de cada cidade-hub.</p><canvas id="hubDetailsChart"></canvas></div></div></div>
+                </div>
+            </section>
+
+            <section id="segmentacao-clientes" class="content-section">
+                <h2 class="mb-4">Segmentação de Clientes</h2>
+                <div class="card info-card"><div class="card-body"><h5><i class="bi bi-people-fill me-2"></i>Perfil dos Segmentos de Clientes</h5><p class="text-muted">Comparativo do comportamento médio de cada segmento. Cada gráfico de radar mostra a "impressão digital" de um grupo de clientes específico, facilitando a comparação de seus perfis de compra.</p></div></div>
+                <div class="row mt-4" id="clusters-grid"></div>
+            </section>
+
+            <section id="sobre" class="content-section">
+                <h2 class="mb-4">Sobre o Projeto MyNextRide</h2>
+                <div class="card info-card mb-5"><div class="card-body p-4"><div class="row align-items-center"><div class="col-lg-8"><p>O <strong>MyNextRide</strong> é uma solução de Business Intelligence desenvolvida para o Desafio ClickBus 2025.</p><p>Utilizando um conjunto de dados de viagens, a plataforma aplica técnicas avançadas de análise de dados e machine learning para decodificar o comportamento dos clientes, incluindo segmentação, análise de hubs e modelagem preditiva para prever a próxima compra e rota de um cliente.</p><p>O objetivo é transformar dados brutos em inteligência acionável, permitindo que a ClickBus otimize suas estratégias de marketing, personalize ofertas e melhore a retenção de clientes.</p></div><div class="col-lg-4 text-center"><img src="img/logo_mynextride.png" alt="Logo do Projeto" class="img-fluid about-logo"></div></div></div></div>
+                
+                <div class="text-center mt-5"><h2 class="team-title">Nosso Time</h2><p class="team-subtitle">Conheça os profissionais por trás do nosso sucesso.</p></div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="card team-card text-center h-100">
+                            <img src="img/sua-foto.jpg" class="card-img-top team-img" alt="Foto de Arthur Marques">
+                            <div class="card-body">
+                                <h5 class="card-title">Arthur Marques</h5>
+                                <p class="card-text">RM 563895</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="card team-card text-center h-100">
+                            <img src="img/sua-foto.jpg" class="card-img-top team-img" alt="Foto de Gustavo Rodrigues">
+                            <div class="card-body">
+                                <h5 class="card-title">Gustavo Rodrigues</h5>
+                                <p class="card-text">RM 566473</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="card team-card text-center h-100">
+                            <img src="img/sua-foto.jpg" class="card-img-top team-img" alt="Foto de Vinicios Silva">
+                            <div class="card-body">
+                                <h5 class="card-title">Vinicios Silva</h5>
+                                <p class="card-text">RM 564534</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="card team-card text-center h-100">
+                            <img src="img/sua-foto.jpg" class="card-img-top team-img" alt="Foto de Vinicius Perez">
+                            <div class="card-body">
+                                <h5 class="card-title">Vinicius Perez</h5>
+                                <p class="card-text">RM 563324</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </section>
+
+            <section id="fale-conosco" class="content-section">
+                <div class="fale-conosco-container">
+                    <div class="fale-conosco-illustration">
+                        <img src="img/logo_mynextride.png" alt="Logo MyNextRide" class="img-fluid fale-conosco-logo">
+                        <p class="illustration-text">Sua jornada começa aqui.<br>Tire suas dúvidas e nos mande sua sugestão.</p>
+                    </div>
+                    <div class="fale-conosco-form-card">
+                        <h2 class="form-title">Fale Conosco</h2>
+                        <form id="contact-form">
+                            <div class="mb-3">
+                                <input type="text" name="nome" class="form-control" id="contact-name" placeholder="Nome" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" name="email" class="form-control" id="contact-email" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea name="mensagem" class="form-control" id="contact-message" rows="5" placeholder="Mensagem" required></textarea>
+                            </div>
+                            <button type="submit" class="btn submit-button">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
